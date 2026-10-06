@@ -11,6 +11,7 @@ import me.SuperRonanCraft.BetterRTP.references.PermissionNode;
 import me.SuperRonanCraft.BetterRTP.references.rtpinfo.CooldownData;
 import me.SuperRonanCraft.BetterRTP.references.rtpinfo.CooldownHandler;
 import me.SuperRonanCraft.BetterRTP.references.rtpinfo.worlds.WorldPlayer;
+import me.SuperRonanCraft.BetterRTP.player.rtp.RTP_TYPE;
 
 public class HelperRTP_Check {
 
@@ -18,8 +19,11 @@ public class HelperRTP_Check {
         if (isRTPing(player)) { //Is RTP'ing
             return RTP_ERROR_REQUEST_REASON.IS_RTPING;
         }
-        // Not forced and has 'betterrtp.world.<world>'
-        if (sendi == player && !PermissionCheck.getAWorld(sendi, pWorld.getWorld().getName())) {
+     // Normal player RTPs require world permission; forced/respawn RTPs do not
+        if (sendi == player
+                && pWorld.getRtp_type() != RTP_TYPE.FORCED
+                && pWorld.getRtp_type() != RTP_TYPE.RESPAWN
+                && !PermissionCheck.getAWorld(sendi, pWorld.getWorld().getName())) {
             return RTP_ERROR_REQUEST_REASON.NO_PERMISSION;
         }
         // Check disabled worlds
